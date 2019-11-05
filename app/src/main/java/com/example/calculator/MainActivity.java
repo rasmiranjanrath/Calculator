@@ -1,16 +1,13 @@
 package com.example.calculator;
 
+
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+
 
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -37,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
     private Button substract;
     private Button clear;
     private Button delete;
-
-    private static String  [] operations = {"+","-","*","/"};
 
 
 
@@ -68,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         substract=findViewById(R.id.buttonSubtract);
         clear=findViewById(R.id.buttonClear);
         delete=findViewById(R.id.buttonDelete);
-
+        initializeResultWithZero();
 
         one.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,12 +192,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String data=viewHolder.getText().toString();
+                Double finalResult = 0.0;
                 try{
-                    Double finalResult = compute(data);
+                    if(data!=null && data.length()!=0) {
+                        finalResult = compute(data);
+                    }
                     result.setText(finalResult.toString());
                     result.setTextColor(getResources().getColor(R.color.colorPrimary));
                 }catch(Exception e){
-                    result.setText("Invalid Expression");
+                    result.setText(R.string.error);
                     result.setTextColor(getResources().getColor(R.color.Red));
                 }
 
@@ -221,9 +219,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 viewHolder.setText("");
-                result.setText("");
+                initializeResultWithZero();
             }
         });
+    }
+    private void initializeResultWithZero(){
+        result.setText("0.0");
+        result.setTextColor(getResources().getColor(R.color.colorPrimary));
     }
     static double compute(String equation) throws  Exception{
         double result = 0.0;
@@ -250,6 +252,5 @@ public class MainActivity extends AppCompatActivity {
 
         return result;
     }
-
 
 }
